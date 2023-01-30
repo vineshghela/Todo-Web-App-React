@@ -6,6 +6,7 @@ import {
   GridValueGetterParams,
   GridSelectionModel,
 } from "@mui/x-data-grid";
+import { values } from "lodash";
 
 interface IProps {
   getContacts: contacts[] | undefined;
@@ -14,6 +15,7 @@ interface IProps {
   setSelectionModel: (item: GridSelectionModel) => void;
   selectionModel: GridSelectionModel;
   addNewRow: () => void;
+  addNewContact:any
 }
 
 interface contacts {
@@ -64,6 +66,29 @@ export const useTable = (): IProps => {
 
   // }
 
+  const addNewContact = (contact:any)=>{
+    console.log(contact)
+    console.log("im called")
+
+    // axios.post("http://localhost:8080/users",{contact}).then(response =>console.log(response))
+    var config = {
+      method: 'post',
+      url: 'http://localhost:8080/user',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : contact
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   const getHeaders = (): GridColDef[] => {
     let columns: GridColDef[] = [];
     if (getContacts) {
@@ -87,5 +112,6 @@ export const useTable = (): IProps => {
     setSelectionModel,
     selectionModel,
     addNewRow,
+    addNewContact,
   };
 };
